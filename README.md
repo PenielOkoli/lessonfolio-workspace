@@ -25,6 +25,9 @@ Open http://localhost:3000. Run `npm test`, `npm run typecheck` and `npm run bui
 - [Product brief, release targets and collaboration record](docs/product.md)
 - [Publishing and approval rules](lib/lesson.ts)
 - [Example lesson and worksheets](lib/sample.ts)
-- [Behaviour tests](tests/lesson.test.ts)
+- [Behaviour tests](tests/lesson.test.ts) and [browser walkthrough tests](tests/browser/publishing.spec.ts)
+- [Build results and downloadable browser screenshots](https://github.com/PenielOkoli/lessonfolio-workspace/actions/workflows/check.yml)
+
+For the browser checks, run `npx playwright install chromium`, `npm run build` and `npm run test:browser`. Each viewport exercises the full approval flow and reloads the saved notebook.
 
 The release evidence will grow with the project. The final README should lead with the verified live site and link to desktop/mobile screenshots, the colour palette, test results, the presentation PDF, demo and AI-use reflection.
