@@ -12,7 +12,7 @@ test("save a resource, attach it and update its published visibility", async ({ 
   await page.getByLabel("Resource title").fill("   ");
   await page.getByLabel("Question or instructions").fill(content);
   await page.getByRole("button", { name: "Save resource" }).click();
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: "Enter both a title and a question or instructions." })).toBeVisible();
   await page.getByLabel("Resource title").fill(title);
   await page.getByRole("button", { name: "Save resource" }).click();
   await expect(resource).toBeVisible();
