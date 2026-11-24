@@ -33,3 +33,8 @@ dl { margin: 20px 0 0 } dl>div { display: flex; justify-content: space-between; 
 .notice { background: #e1ebd8; padding: 10px 14px; border-radius: 6px } .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%) }
 @media(max-width:800px){.grid{grid-template-columns:1fr}.publish{position:static}.bar,main{padding-inline:18px}.mast{padding-top:28px}}
 @media(max-width:500px){.bar{flex-wrap:wrap;justify-content:flex-start;padding-block:12px}.brand{width:100%}nav button{padding:8px 12px}.paper{padding:18px}}
+.resource small { white-space: pre-wrap; overflow-wrap: anywhere }
+.resource strong, .reading summary { overflow-wrap: anywhere }
+.resourceForm { margin-top: 18px }
+.resourceForm > summary { cursor: pointer; color: var(--accent); font-weight: 650 }
+.resourceForm form { margin-top: 12px }
