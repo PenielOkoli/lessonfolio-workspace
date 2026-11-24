@@ -4,7 +4,7 @@ const decision = z.enum(["pending", "approved", "rejected"]);
 const activity = z.object({
   id: z.string(), title: z.string(), text: z.string(), decision
 });
-const resource = z.object({ title: z.string(), content: z.string(), attached: z.boolean() });
+const resource = z.object({ id: z.string().optional(), title: z.string(), content: z.string(), attached: z.boolean() });
 const draftSchema = z.object({
   title: z.string(), objective: z.string(), instructions: z.string(),
   activities: z.array(activity), resources: z.array(resource)
@@ -12,7 +12,7 @@ const draftSchema = z.object({
 const editionSchema = z.object({
   version: z.number().int().positive(), title: z.string(), objective: z.string(),
   instructions: z.string(), activities: z.array(activity.pick({ title: true, text: true })),
-  resources: z.array(resource.pick({ title: true, content: true }))
+  resources: z.array(resource.pick({ id: true, title: true, content: true }))
 });
 export const workspaceSchema = z.object({
   format: z.literal(1), draft: draftSchema, edition: editionSchema.nullable()
@@ -52,7 +52,7 @@ export function publishLesson(workspace: Workspace): Workspace {
       activities: draft.activities.filter(item => item.decision === "approved")
         .map(({ title, text }) => ({ title, text })),
       resources: draft.resources.filter(item => item.attached)
-        .map(({ title, content }) => ({ title, content }))
+        .map(({ attached, ...resource }) => resource)
     }
   };
 }

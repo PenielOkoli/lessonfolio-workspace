@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ClipboardList, FileText, Layers, Library, Send, Sparkles } from "lucide-react";
+import { ResourceForm } from "./resource-form";
 import { classroom, exampleWorkspace } from "../lib/sample";
 import { publicationIssue, publishLesson, reviewActivity, reviseActivity, workspaceSchema } from "../lib/lesson";
 import type { Draft, Workspace } from "../lib/lesson";
@@ -78,7 +79,7 @@ export function LessonDesk() {
           {edition.instructions && <><h3>Instructions</h3><p>{edition.instructions}</p></>}
           {edition.activities.map((item, i) => <section key={i}><h3>{item.title}</h3><p>{item.text}</p></section>)}
           {edition.resources.length > 0 && <h3>Learning resources</h3>}
-          {edition.resources.map(item => <details key={item.title}><summary>{item.title}</summary><p>{item.content}</p></details>)}
+          {edition.resources.map(item => <details key={item.id ?? item.title}><summary>{item.title}</summary><p>{item.content}</p></details>)}
         </> : <><BookOpen/><h2>Your first edition starts at the teacher desk.</h2><p>Publish a lesson to see the student copy here.</p></>}
         <button className="outline" onClick={() => setStudent(false)}>Return to teacher desk</button>
       </article> : <div className="grid"><fieldset disabled={!ready} className="editor" aria-label="Lesson editor">
@@ -99,8 +100,24 @@ export function LessonDesk() {
           </article>)}
         </section>
         <section className="paper"><div className="sectionTitle"><Layers/><h2>Resources</h2></div>
-        {draft.resources.map((item, index) => <label className="resource" key={item.title}><input type="checkbox" checked={item.attached} onChange={e => edit(d => ({ ...d, resources: d.resources.map((r, i) => i === index ? { ...r, attached: e.target.checked } : r) }))}/>
-        <span><strong>{item.title}</strong><small>{item.content}</small></span></label>)}</section>
+          <ResourceForm onSave={resource => {
+            edit(current => ({ ...current, resources: [...current.resources, resource] }));
+            setNotice("Resource saved. Select its checkbox to attach it to the lesson.");
+          }} />
+          {draft.resources.map((item, index) => (
+            <label className="resource" key={item.id ?? item.title}>
+              <input type="checkbox" checked={item.attached} onChange={event => {
+                const attached = event.currentTarget.checked;
+                edit(current => ({
+                  ...current,
+                  resources: current.resources.map((resource, i) =>
+                    i === index ? { ...resource, attached } : resource)
+                }));
+              }} />
+              <span><strong>{item.title}</strong><small>{item.content}</small></span>
+            </label>
+          ))}
+        </section>
       </fieldset>
       <aside className="paper publish"><ClipboardList/><h2>Publish lesson</h2><p>Students see a separate copy. Later edits stay in your draft until you publish again.</p>
         <dl><div><dt>Approved activities</dt><dd>{approved}</dd></div><div><dt>Attached resources</dt><dd>{attachments}</dd></div>

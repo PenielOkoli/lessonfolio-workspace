@@ -4,7 +4,7 @@ FlexiSAF Frontend Advanced capstone, project 5. Lessonfolio helps a teacher prep
 
 ## First milestone
 
-A single-device prototype with an editable lesson, guided-practice and extension suggestions, teacher approval, two attachable resources and a student preview. Suggestions come from labelled rules. The browser saves this notebook locally. A different browser opens its own sample. A public student link, teacher accounts and a hosted model are future decisions.
+A single-device prototype with an editable lesson, guided-practice and extension suggestions, teacher approval, two sample resources and a form for adding your own and a student preview. Suggestions come from labelled rules. The browser saves this notebook locally. A different browser opens its own sample. A public student link, teacher accounts and a hosted model are future decisions.
 
 **Try it.** Open the teacher desk, suggest activities, rewrite and approve one, reject the other, attach the worksheet and publish. Open the worksheet in Student view. Return to the desk and edit the approved activity. The copy you already published stays readable until you publish again.
 
