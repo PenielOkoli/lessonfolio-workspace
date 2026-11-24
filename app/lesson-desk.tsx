@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ClipboardList, FileText, Layers, Library, Send, Sparkles } from "lucide-react";
+import { ResourceRow } from "./resource-row";
 import { ResourceForm } from "./resource-form";
 import { classroom, exampleWorkspace } from "../lib/sample";
 import { publicationIssue, publishLesson, reviewActivity, reviseActivity, workspaceSchema } from "../lib/lesson";
@@ -48,6 +49,13 @@ export function LessonDesk() {
     setWorkspace(current => ({ ...current, draft: change(current.draft) }));
     setNotice("");
   }
+  function updateResource(index: number, changes: Partial<Pick<Draft["resources"][number], "title" | "content" | "attached">>) {
+    edit(current => ({
+      ...current,
+      resources: current.resources.map((item, i) => i === index ? { ...item, ...changes } : item)
+    }));
+  }
+
   function suggest() {
     const batchId = crypto.randomUUID();
     const activities = suggestActivities(draft.objective, need).map(item => ({ ...item, id: batchId + "-" + item.id }));
@@ -79,7 +87,7 @@ export function LessonDesk() {
           {edition.instructions && <><h3>Instructions</h3><p>{edition.instructions}</p></>}
           {edition.activities.map((item, i) => <section key={i}><h3>{item.title}</h3><p>{item.text}</p></section>)}
           {edition.resources.length > 0 && <h3>Learning resources</h3>}
-          {edition.resources.map(item => <details key={item.id ?? item.title}><summary>{item.title}</summary><p>{item.content}</p></details>)}
+          {edition.resources.map((item, index) => <details key={item.id ?? `sample-${index}`}><summary>{item.title}</summary><p>{item.content}</p></details>)}
         </> : <><BookOpen/><h2>Your first edition starts at the teacher desk.</h2><p>Publish a lesson to see the student copy here.</p></>}
         <button className="outline" onClick={() => setStudent(false)}>Return to teacher desk</button>
       </article> : <div className="grid"><fieldset disabled={!ready} className="editor" aria-label="Lesson editor">
@@ -100,22 +108,21 @@ export function LessonDesk() {
           </article>)}
         </section>
         <section className="paper"><div className="sectionTitle"><Layers/><h2>Resources</h2></div>
-          <ResourceForm onSave={resource => {
-            edit(current => ({ ...current, resources: [...current.resources, resource] }));
-            setNotice("Resource saved. Select its checkbox to attach it to the lesson.");
-          }} />
+          <details className="resourceForm">
+            <summary>Add a resource</summary>
+            <ResourceForm onSave={fields => {
+              const resource = { ...fields, id: crypto.randomUUID(), attached: false };
+              edit(current => ({ ...current, resources: [...current.resources, resource] }));
+              setNotice("Resource saved. Select its checkbox to attach it to the lesson.");
+            }} />
+          </details>
           {draft.resources.map((item, index) => (
-            <label className="resource" key={item.id ?? item.title}>
-              <input type="checkbox" checked={item.attached} onChange={event => {
-                const attached = event.currentTarget.checked;
-                edit(current => ({
-                  ...current,
-                  resources: current.resources.map((resource, i) =>
-                    i === index ? { ...resource, attached } : resource)
-                }));
+            <ResourceRow key={item.id ?? `sample-${index}`} item={item}
+              onAttach={attached => updateResource(index, { attached })}
+              onSave={fields => {
+                updateResource(index, fields);
+                setNotice("Resource updated in your draft.");
               }} />
-              <span><strong>{item.title}</strong><small>{item.content}</small></span>
-            </label>
           ))}
         </section>
       </fieldset>

@@ -1,9 +1,15 @@
 import { useState, type FormEvent } from "react";
 import type { Draft } from "../lib/lesson";
 
-type Resource = Draft["resources"][number];
+type ResourceText = Pick<Draft["resources"][number], "title" | "content">;
 
-export function ResourceForm({ onSave }: { onSave: (resource: Resource) => void }) {
+type Props = {
+  initial?: ResourceText;
+  onSave: (fields: ResourceText) => void;
+  onCancel?: () => void;
+};
+
+export function ResourceForm({ initial, onSave, onCancel }: Props) {
   const [error, setError] = useState("");
 
   function save(event: FormEvent<HTMLFormElement>) {
@@ -18,20 +24,20 @@ export function ResourceForm({ onSave }: { onSave: (resource: Resource) => void 
       return;
     }
 
-    onSave({ id: crypto.randomUUID(), title, content, attached: false });
-    form.reset();
+    onSave({ title, content });
+    if (!initial) form.reset();
     setError("");
   }
 
   return (
-    <details className="resourceForm">
-      <summary>Add a resource</summary>
-      <form onSubmit={save} onChange={() => setError("")}>
-        <label>Resource title<input name="title" required /></label>
-        <label>Question or instructions<textarea name="content" rows={3} required /></label>
-        {error && <p role="alert">{error}</p>}
-        <button type="submit" className="outline">Save resource</button>
-      </form>
-    </details>
+    <form onSubmit={save} onChange={() => setError("")}>
+      <label>Resource title<input name="title" defaultValue={initial?.title} autoFocus={!!initial} required /></label>
+      <label>Question or instructions<textarea name="content" defaultValue={initial?.content} rows={3} required /></label>
+      {error && <p role="alert">{error}</p>}
+      <div className="actions">
+        <button type="submit" className="outline">{initial ? "Save changes" : "Save resource"}</button>
+        {onCancel && <button type="button" className="quiet" onClick={onCancel}>Cancel</button>}
+      </div>
+    </form>
   );
 }
