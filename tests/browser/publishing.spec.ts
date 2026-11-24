@@ -4,6 +4,7 @@ test("teacher decisions survive publication, a later edit and a reload", async (
   await page.goto("/");
   await expect(page.getByText("Saved on this device")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: info.outputPath("teacher-overview.png") });
   await page.getByRole("button", { name: "Suggest activities" }).click();
   const first = page.getByRole("article").filter({ hasText: "Worked example" });
   const second = page.getByRole("article").filter({ hasText: "Check for understanding" });
