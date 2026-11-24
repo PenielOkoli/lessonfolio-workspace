@@ -11,7 +11,7 @@ export function exampleWorkspace(): Workspace {
       activities: [],
       resources: [
         { title: "Fraction strips worksheet", content: "Draw three equal bars. Divide them into halves, quarters and eighths. Shade the same amount in each. Write the three equivalent fractions.", attached: true },
-        { title: "Exit ticket", content: "A friend argues 2/6 is larger than 1/3 because 6 is larger than 3. Prove him by drawing diagrams of both fractions to find out if your friend is correct or not.", attached: false }
+        { title: "Exit ticket", content: "Is your friend correct? Draw two equal-sized bars, shade 2/6 of one and 1/3 of the other, and explain what you notice.", attached: false }
       ]
     }
   };
