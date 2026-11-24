@@ -20,7 +20,7 @@ export function ResourceRow({ item, onAttach, onSave }: Props) {
   }
 
   return (
-    <div>
+    <div className="resourceRow">
       <label className="resource">
         <input type="checkbox" checked={item.attached} onChange={event => onAttach(event.currentTarget.checked)} />
         <span><strong>{item.title}</strong><small>{item.content}</small></span>
