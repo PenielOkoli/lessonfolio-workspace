@@ -2,6 +2,13 @@
 
 FlexiSAF Frontend Advanced capstone, project 5. Lessonfolio helps a teacher prepare one lesson, adapt activities to a class, review suggestions and publish a student edition.
 
+## Workspace previews
+
+| View | Desktop | Phone |
+| --- | --- | --- |
+| Teacher desk | [Desktop teacher desk](docs/previews/desktop-teacher.webp) | [Phone teacher desk](docs/previews/phone-teacher.webp) |
+| Student edition | [Desktop student edition](docs/previews/desktop-student.webp) | [Phone student edition](docs/previews/phone-student.webp) |
+
 ## First milestone
 
 A single-device prototype with an editable lesson, guided-practice and extension suggestions, teacher approval, two sample resources and a form for adding your own and a student preview. Suggestions come from labelled rules. The browser saves this notebook locally. A different browser opens its own sample. A public student link, teacher accounts and a hosted model are future decisions.
